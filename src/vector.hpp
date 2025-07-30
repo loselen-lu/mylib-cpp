@@ -2,13 +2,13 @@
 
 #include <vector>
 #include <initializer_list>
-#include <cassert>
 #include <iostream>
 
 class Vector {
 private:
     std::vector<double> data;
 public:
+    Vector(size_t size) : data(size, 0.0) {}
     Vector(const std::initializer_list<double>& data) : data(data) {}
     Vector(const std::vector<double>& data) : data(data) {}
 
@@ -16,8 +16,14 @@ public:
         return data.size();
     }
 
+    const double& operator[](size_t index) const {
+        return data[index];
+    }
+    double& operator[](size_t index) {
+        return data[index];
+    }
+
     Vector operator+(const Vector& other) const {
-        assert(data.size() == other.data.size());
         std::vector<double> res(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             res[i] = data[i] + other.data[i];
@@ -26,7 +32,6 @@ public:
     }
 
     double operator*(const Vector& other) const {
-        assert(data.size() == other.data.size());
         double res = 0;
         for (size_t i = 0; i < data.size(); i++) {
             res += data[i] * other.data[i];
